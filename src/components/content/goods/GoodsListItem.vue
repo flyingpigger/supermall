@@ -1,17 +1,24 @@
 <template>
   <div class="goods_item" @click="itemClick">
     <img v-lazy="showImg" alt="" @load="imgLoad"/>
+<!--    <img :src="goodsItem.imgUrl" @load="imgLoad">-->
     <div class="goods_info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">￥{{ goodsItem.price }}</span>
-      <span class="collect">{{ goodsItem.cfav }}</span>
+      <span class="collect"></span>
     </div>
   </div>
 </template>
 <script>
 export default {
+  name: "GoodsListItem",
   props: {
-    goodsItem: Object
+    goodsItem: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   methods: {
     imgLoad() {
@@ -25,14 +32,14 @@ export default {
       } */
     },
     itemClick() {
-      if (this.$route.path.indexOf("home") != -1) {
-        this.$router.push("/detail/" + this.goodsItem.iid);
+      if (this.$route.path.indexOf("home") !== -1) {
+        this.$router.push("/detail/" + this.goodsItem.id);
       }
     }
   },
   computed: {
     showImg() {
-      return this.goodsItem.image || this.goodsItem.show.img;
+      return this.goodsItem.imgUrl;
     }
   }
 };
@@ -40,10 +47,9 @@ export default {
 
 <style scoped>
 .goods_item {
-  padding: 0.21rem;
   width: 48%;
   position: relative;
-  padding-bottom: 1.68rem;
+  padding: 0.21rem 0.21rem 1.68rem;
 }
 
 .goods_item img {
@@ -77,7 +83,7 @@ export default {
 .collect::before {
   display: inline-block;
   content: "";
-  background: url("@/assets/img/common/collect.svg") 0 0/0.6rem 0.6rem;
+  background: url("~assets/img/common/collect.svg") 0 0/0.6rem 0.6rem;
   position: relative;
   top: 0.04rem;
   right: 0.08rem;

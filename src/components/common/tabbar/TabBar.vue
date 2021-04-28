@@ -21,7 +21,7 @@
     right: 0;
     bottom: 0;
 
-    box-shadow: 0 -2px 10px rgba(100, 100, 100, 0.8);
+    box-shadow: 0 -2px 10px rgba(100, 100, 100, 0.3);
   }
 
 </style>

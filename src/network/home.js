@@ -1,7 +1,18 @@
 import {request} from "@/network/request"
 
-export function getHomeMultiData() {
+export function getHomeBanner() {
   return request({
-    url: '/home/multidata'
+    url: '/banner'
+  })
+}
+
+export function getHomeGoods(type, pn) {
+  return request({
+    url: '/books',
+    method: "GET",
+    params: {
+      type: type,
+      pn: pn
+    }
   })
 }

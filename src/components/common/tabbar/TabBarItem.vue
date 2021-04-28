@@ -4,7 +4,6 @@
     <div v-else><slot name="item-icon-active"></slot></div>
     <div :style="activeStyle"><slot name="item-text"></slot></div>
     <!--    <img src="../../assets/img/tabbar/h" alt="">-->
-    <!--    <div>首页</div>-->
   </div>
 </template>
 

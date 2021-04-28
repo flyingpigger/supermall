@@ -1,15 +1,24 @@
 <template>
-  <div>
-    <h2>Category</h2>
+  <div class="wrapper">
   </div>
 </template>
 
 <script>
+
   export default {
-    name: "Category"
+    name: "Category",
+    data() {
+      return {
+        scroll: null
+      }
+    },
+    mounted() {
+    }
   }
 </script>
 
 <style scoped>
-
+  .wrapper {
+    overflow: hidden;
+  }
 </style>
