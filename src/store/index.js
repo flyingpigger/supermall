@@ -8,10 +8,9 @@ import user from "@/store/modules/user"
 Vue.use(Vuex);
 
 const state = {
-  slideCount: 0,
   cartList: [],
-  uid: "",
-  userName: ""
+  // uid: "",
+  // userName: ""
 };
 const store = new Vuex.Store({
   modules: {

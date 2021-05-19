@@ -14,13 +14,13 @@
         <span>收藏</span>
       </div>
     </div>
-    <div class="bottom_right">
+    <div class="bottom">
       <div class="cart" @click="addToCart">
         加入购物车
       </div>
-      <div class="buy">
-        购买
-      </div>
+<!--      <div class="buy">-->
+<!--        购买-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -66,11 +66,11 @@ export default {
 .shop .icon {
   background-position: 0 -4.5rem;
 }
-.bottom_right {
+.bottom {
   display: flex;
   flex: 1;
 }
-.bottom_right > div {
+.bottom > div {
   flex: 1;
   line-height: 3rem;
 }

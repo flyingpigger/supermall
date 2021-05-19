@@ -6,7 +6,7 @@
       </div>
     </nav-bar>
 
-    <cart-list></cart-list>
+    <cart-list ref="scroll"></cart-list>
     <cart-total></cart-total>
   </div>
 </template>
@@ -16,14 +16,35 @@ import NavBar from "@/components/common/navbar/NavBar.vue";
 import CartList from "./childComps/CartList.vue";
 import CartTotal from "./childComps/CartBottomBar.vue";
 
+import {getCart} from "@/network/cart"
+import {CHANGE_CART} from "@/store/mutations_type"
+import {UID} from "@/common/cookie_keys"
+
 export default {
   name: 'Cart',
   data() {
-    return {};
+    return {
+      userID: null
+    }
   },
   computed: {
     cartLength() {
       return this.$store.state.cartList.length;
+    }
+  },
+  activated() {
+    this.userID = this.$cookies.get(UID)
+    this.loadCart()
+
+    this.$bus.$on("cartImgLoadEvent", this.$refs.scroll.refresh());
+  },
+  methods: {
+    loadCart() {
+      if (this.userID) {
+        getCart(this.userID).then((res) => {
+          this.$store.commit(CHANGE_CART, res);
+        })
+      }
     }
   },
   components: {
@@ -31,12 +52,7 @@ export default {
 
     CartList,
     CartTotal
-  },
-  created() {
-    let a = this.$cookies.get("uid")
-    console.log(a)
-  },
-  methods: {}
+  }
 };
 </script>
 <style scoped>

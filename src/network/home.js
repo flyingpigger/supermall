@@ -6,13 +6,3 @@ export function getHomeBanner() {
   })
 }
 
-export function getHomeGoods(type, pn) {
-  return request({
-    url: '/books',
-    method: "GET",
-    params: {
-      type: type,
-      pn: pn
-    }
-  })
-}

@@ -1,7 +1,6 @@
 <template>
   <div class="goods_item" @click="itemClick">
     <img v-lazy="showImg" alt="" @load="imgLoad"/>
-<!--    <img :src="goodsItem.imgUrl" @load="imgLoad">-->
     <div class="goods_info">
       <p>{{ goodsItem.title }}</p>
       <span class="price">￥{{ goodsItem.price }}</span>
@@ -22,19 +21,10 @@ export default {
   },
   methods: {
     imgLoad() {
-      //可以在home页面中，单独$off掉home的那个事件。
       this.$bus.$emit("goodsImgLoadEvent");
-
-      /* if (this.$route.path.indexOf("home") != -1) {
-        this.$bus.$emit("goodsImgLoadEvent");
-      } else if (this.$route.path.indexOf("detail") != -1) {
-        this.$bus.$emit("detailScrollEvent");
-      } */
     },
     itemClick() {
-      if (this.$route.path.indexOf("home") !== -1) {
-        this.$router.push("/detail/" + this.goodsItem.id);
-      }
+      this.$router.push("/detail/" + this.goodsItem.id);
     }
   },
   computed: {
@@ -54,15 +44,16 @@ export default {
 
 .goods_item img {
   width: 100%;
+  padding: 10px;
   border-radius: 0.21rem;
 }
 
 .goods_info {
   /* 信息 */
-  font-size: 0.64rem;
+  font-size: 0.8rem;
   text-align: center;
   position: absolute;
-  bottom: 0.21rem;
+  padding-left: 10px;
   left: 0;
   right: 0;
 }

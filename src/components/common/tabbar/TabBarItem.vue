@@ -3,7 +3,6 @@
     <div v-if="!isActive"><slot name="item-icon"></slot></div>
     <div v-else><slot name="item-icon-active"></slot></div>
     <div :style="activeStyle"><slot name="item-text"></slot></div>
-    <!--    <img src="../../assets/img/tabbar/h" alt="">-->
   </div>
 </template>
 
@@ -32,7 +31,9 @@
     },
     methods: {
       itemClick() {
-        this.$router.replace(this.path)
+        if (this.$route.path.indexOf(this.path) === -1) {
+          this.$router.replace(this.path)
+        }
       }
     }
   }

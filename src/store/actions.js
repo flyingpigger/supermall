@@ -5,7 +5,7 @@ export default {
     return new Promise((resolve, reject) => {
       let oldProduct = null;
       for (const item of context.state.cartList) {
-        if (item.bookID === payload.bookID) {
+        if (item.bid === payload.bid) {
           oldProduct = item;
           break;
         }

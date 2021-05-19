@@ -3,3 +3,4 @@ export const ADD_TO_CART = "addCartList";
 export const CHANGE_UID = "changeUid";
 export const CHANGE_USERNAME = "changeUserName";
 export const CHANGE_CART = "changCart"
+export const DELETE_FROM_CART = "deleteCartItem"

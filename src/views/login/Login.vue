@@ -1,120 +1,132 @@
 <template>
-  <div>
-    <el-card class="login-form-layout">
-      <el-form
-        autocomplete="on"
-        :model="loginForm"
-        ref="loginForm"
-        label-position="left"
-      >
-        <h2 class="login-title color-main">mall-admin-web</h2>
-        <el-form-item prop="username">
-          <el-input
-            name="username"
-            type="text"
-            v-model="loginForm.username"
-            autocomplete="on"
-            placeholder="请输入用户名"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            name="password"
-            :type="pwdType"
-            @keyup.enter.native="handleLogin"
-            v-model="loginForm.password"
-            autocomplete="on"
-            placeholder="请输入密码"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item style="margin-bottom: 60px">
-          <el-button
-            style="width: 100%"
-            type="primary"
-            :loading="loading"
-            @click.native.prevent="handleLogin"
-          >登录
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+  <div class="body">
+
+    <van-nav-bar style="background-color: #3090EC;">
+
+      <template #left>
+        <van-icon @click="back" color="white" name="arrow-left"/>
+      </template>
+
+      <template #title>
+        <span style="color: white;">登录</span>
+      </template>
+
+    </van-nav-bar>
+
+    <div class="main">
+      <van-form>
+
+        <van-field
+          v-model="loginForm.username"
+          name="用户名"
+          label="用户名"
+          placeholder="请填写用户名"
+          :rules="[{ required: true }]"
+        />
+
+        <van-field
+          v-model="loginForm.password"
+          :type="passwordType"
+          name="密码"
+          label="密码"
+          placeholder="请填写密码"
+          :rules="[{ required: true },{pattern: /^\w{6,}$/,message:'密码不少于6位'}]"
+        >
+          <template #right-icon>
+            <van-icon @click="onPassword" :class="{'van-icon-eye': isText, 'van-icon-closed-eye': !isText}"></van-icon>
+          </template>
+        </van-field>
+
+        <div style="margin: 16px;">
+          <van-button @click="onSubmit" round block type="info" native-type="submit" :loading="isLoading">
+            登录
+          </van-button>
+        </div>
+
+      </van-form>
+
+      <div style="float: right;">
+        <router-link to="/register">没有账号？点击注册</router-link>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
 <script>
-import {CHANGE_UID, CHANGE_USERNAME, CHANGE_CART} from "@/store/mutations_type"
+import {Toast} from "vant"
 
 export default {
-  name: "login",
+  name: "Login",
   data() {
     return {
       loginForm: {
-        username: "zhou",
-        password: "888888"
+        // username: "zhou",
+        // password: "zhouhaijian1"
+        username: "",
+        password: ""
       },
-      loading: false,
-      pwdType: "password",
+      passwordType: 'password', //密码的type类型
+      isText: false,
+      isLoading: false
     };
   },
   methods: {
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("Login", this.loginForm)
-            .then(response => {
-              this.loading = false;
-              let code = response.code;
-              if (code === 200) {
-                this.$toast.show("登陆成功");
-                let uid = this.$cookies.get("uid");
-                let userName = this.$cookies.get("userName")
-                let cartList = response.data;
-                this.$store.commit(CHANGE_UID, uid);
-                this.$store.commit(CHANGE_USERNAME, userName);
-                this.$store.commit(CHANGE_CART, cartList);
-                console.log(response.data)
+    onSubmit() { //点击登录
+      //如果不符合登录条件则不会继续执行
+      if (this.loginForm.username.trim() === '') {
+        return
+      }
+      if (!this.loginForm.password.match(/^\w{6,}$/)) {
+        return
+      }
+      this.isLoading = true
+      this.$store
+        .dispatch("Login", this.loginForm)
+        .then(response => {
+          let code = response.code;
+          if (code === 200) {
+            Toast.success('登陆成功');
+            // let uid = this.$cookies.get("uid");
+            // let userName = this.$cookies.get("userName")
+            // this.$store.commit(CHANGE_UID, uid);
+            // this.$store.commit(CHANGE_USERNAME, userName);
 
-                this.$router.replace("/profile/" + uid);
-              } else {
-                this.$toast.show("账号或密码错误");
-              }
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("参数验证不合法！");
-          return false;
-        }
-      });
+            setTimeout(() => {
+              this.$router.replace('/profile')
+              this.isLoading = false
+            }, 1000)
+          } else {
+            setTimeout(() => {
+              this.isLoading = false
+            }, 1000)
+            Toast.fail('用户名或密码错误');
+          }
+        })
+        .catch(() => {
+          setTimeout(() => {
+            this.isLoading = false
+          }, 1000)
+        });
+    },
+
+    onPassword() {
+      this.isText = !this.isText
+      if (this.isText) {
+        this.passwordType = 'text'
+      } else {
+        this.passwordType = 'password'
+      }
+    },
+
+    back() {
+      this.$router.back()
     }
   }
-};
+}
 </script>
 
-<style scoped>
-/*.login-form-layout {*/
-/*  position: absolute;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*  width: 360px;*/
-/*  margin: 140px auto;*/
-/*  border-top: 10px solid #409eff;*/
-/*}*/
+<style>
 
-.login-title {
-  text-align: center;
-}
-
-.login-form-layout {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  margin-top: 200px;
-}
 </style>

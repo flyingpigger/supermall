@@ -10,6 +10,7 @@
 <script>
 import CartCheckButton from "./CartCheckButton.vue";
 import {checkAllClick} from "@/network/cart"
+import {UID} from "@/common/cookie_keys"
 
 export default {
   computed: {
@@ -53,13 +54,13 @@ export default {
       } */
       let checkFlag = !this.checkAll;
       this.cartList.forEach(item => (item.checked = checkFlag));
-      checkAllClick(this.$store.state.uid, checkFlag);
+      checkAllClick(this.$cookies.get(UID), checkFlag);
     },
     buySth() {
       if (this.totalLength === 0) {
         this.$toast.show("请选择要购买的商品");
       } else {
-        //====>购买界面，确认信息
+        this.$router.push('/submitOrder');
       }
     }
   }

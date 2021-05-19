@@ -67,8 +67,6 @@ export default {
     },
     refresh() {
       this.scroll.refresh();
-
-      console.log("refresh")
     }
   }
 }

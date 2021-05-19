@@ -1,43 +1,76 @@
 import {request} from "@/network/request"
 
-export function addCount(bookID) {
+export function getCart(uid) {
+  return request({
+    url: "/getCart",
+    params: {
+      uid
+    }
+  })
+}
+
+export function addCount(bid, uid) {
   return request({
     url: "/addCount",
-    method: 'put',
+    method: 'PUT',
     params: {
-      bookID
+      bid,
+      uid
     }
   })
 }
 
-export function addItem(bookID, userID,) {
+export function minusCount(bid, uid) {
+  return request({
+    url: "/minusCount",
+    method: 'PUT',
+    params: {
+      bid,
+      uid
+    }
+  })
+}
+
+export function addItem(bid, uid) {
   return request({
     url: "/addItem",
-    method: 'post',
+    method: 'POST',
     params: {
-      bookID,
-      userID
+      bid,
+      uid
     }
   })
 }
 
-export function checkClick(bookID, checked) {
+export function deleteItem(bid, uid) {
+  return request({
+    url: "/deleteItem",
+    method: 'DELETE',
+    params: {
+      bid,
+      uid
+    }
+  })
+}
+
+export function checkClick(bid, checked, uid) {
   return request({
     url: "/setCheck",
-    method: 'put',
+    method: 'PUT',
     params: {
-      bookID,
-      checked
+      bid,
+      checked,
+      uid
     }
   })
 }
 
-export function checkAllClick(userID, checked) {
+export function checkAllClick(uid, checked) {
   return request({
     url: "/setAllCheck",
-    method: 'put',
+    method: 'PUT',
     params: {
-      userID,
+      uid,
       checked
     }
   })

@@ -6,6 +6,7 @@
           v-for="(item, index) in $store.state.cartList"
           :key="index"
           :item="item"
+          @cartImgLoadEvent="refresh"
         ></cart-list-item>
       </template>
     </scroll>
@@ -24,9 +25,10 @@ export default {
     Scroll,
     CartListItem
   },
-  methods: {},
-  activated() {
-    this.$refs.scroll.refresh();
+  methods: {
+    refresh() {
+      this.$refs.scroll.refresh();
+    }
   }
 };
 </script>

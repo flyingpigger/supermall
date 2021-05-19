@@ -9,19 +9,31 @@
           <img class="avatar" src="~assets/img/profile/avatar.svg" alt="">
 
           <span class="login" v-if="uBaseInfo.uid == null">登陆</span>
-          <span class="login" v-else>{{uBaseInfo.userName}}</span>
+          <span class="login" v-else>{{ uBaseInfo.userName }}</span>
         </div>
         <div class="arrow">
           <img src="~assets/img/common/arrow-left.svg" alt="">
         </div>
       </div>
-      <!--      <div class="login_out" @click="quitClick">退出账号</div>-->
+    </div>
+
+    <div v-if="isLogin" class="clear-fix">
+      <div class="options">
+        <van-button @click="changePasswordClick">修改密码</van-button>
+        <van-button class="login_out" @click="quitClick">退出账号</van-button>
+      </div>
     </div>
 
     <div style="height: 15px; background-color: #eeeeee"></div>
 
-    <van-cell is-link @click="myOrder">我的订单</van-cell>
-    <van-cell is-link>我的地址</van-cell>
+    <van-cell is-link @click="myOrder">
+      <van-icon name="bag"/>
+      我的订单
+    </van-cell>
+    <van-cell is-link @click="myAddress">
+      <van-icon name="map-marked"/>
+      我的地址
+    </van-cell>
 
     <div style="height: 13px; background-color: #eeeeee"></div>
 
@@ -33,6 +45,7 @@
 
 <script>
 
+import {UID} from "@/common/cookie_keys"
 
 export default {
   name: "Profile",
@@ -44,28 +57,44 @@ export default {
       }
     }
   },
+  computed: {
+    isLogin() {
+      return this.uBaseInfo.uid !== null
+    }
+  },
   activated() {
-    this.uBaseInfo.uid = this.$route.params.uid;
-    // this.uBaseInfo.userName = this.$cookies.get("userName");
-    this.uBaseInfo.userName = this.$store.state.userName;
-    console.log("111111111")
+    this.uBaseInfo.uid = this.$cookies.get(UID);
+    this.uBaseInfo.userName = this.$cookies.get("userName");
   },
   methods: {
     login() {
-      this.$router.replace("/login");
+      if (this.isLogin === false) {
+        this.$router.push("/login");
+      }
     },
     myOrder() {
-      this.$router.push("/order");
+      if (this.$cookies.get(UID) !== null) {
+        this.$router.push("/myOrder");
+      } else {
+        this.$router.push("/login")
+      }
     },
     myAddress() {
-      this.$router.push("/address");
+      if (this.$cookies.get(UID) !== null) {
+        this.$router.push("/address");
+      } else {
+        this.$router.push("/login")
+      }
+    },
+    quitClick() {
+      this.$cookies.remove(UID)
+      this.$cookies.remove("userName")
+      location.reload()
+    },
+    changePasswordClick() {
+      this.$router.push("/changePassword")
     }
   }
-  // activated() {
-  //   if (this.$store.state.uid === "") {
-  //     this.$router.replace("/login");
-  //   }
-  // }
 }
 </script>
 
@@ -107,11 +136,17 @@ export default {
 }
 
 .arrow {
-  padding-right: 3px;
+  padding-right: 15px;
 }
 
 .arrow img {
   height: 20px;
+}
+
+.options{
+  /*display: flex;*/
+  /*justify-content: space-between;*/
+  float: right;
 }
 
 </style>
